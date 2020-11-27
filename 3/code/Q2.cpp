@@ -13,7 +13,6 @@ bool compare(string A, string B){ // return true if |A|>|B|
 		int n = A.length();
 		for (int i = 0; i < A.length() ; i++){
 			if (A[n-i-1] == B[n-i-1]) {
-//				cout<<"nothing"<<endl;
 			}
 			else {
 				return (A[n-i-1] > B[n-i-1]);
