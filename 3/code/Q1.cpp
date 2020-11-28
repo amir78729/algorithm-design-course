@@ -1,109 +1,67 @@
-#include <bits/stdc++.h> 
-#include <string>
+// C++ implementation of Radix Sort 
+#include <iostream> 
 using namespace std; 
 
-void swap(string* a, string* b) { 
-	string t = *a; 
-	*a = *b; 
-	*b = t; 
+// A utility function to get maximum value in arr[] 
+int find_max(int arr[], int n) { 
+	int max = arr[0]; 
+	for (int i = 1; i < n; i++) 
+		if (arr[i] > max) 
+			max = arr[i]; 
+	return max; 
 } 
 
-bool compare(string A, string B){ // return true if |A|>|B|
-//	cout << A << " " << A.length() << " , " << B << " " << B.length() << "=>" << (A.length() == B.length()) << endl;
-	if (A.length() == B.length()){ // |A| = |B|
-		int n = A.length();
-//		cout << "EQ"<<endl;
-//		cout << A[A.length() - 1] << ","<< B[B.length() - 1] << endl;
-//		cout << int(A[A.length() - 1]) << ","<< int(B[B.length() - 1]) << endl;
-//		for (int i = A.length() - 1; i == 0; i--){
-		for (int i = 0; i < A.length() ; i++){
-//			cout <<"i="<<i << endl;
-//			cout << A[n-i-1] << ","<< B[n-i-1] << endl;
-//			cout << (A[i] == B[i]) << endl;
-//			cout <<typeid(A[i]).name()<<endl;
-			if (A[n-i-1] == B[n-i-1]) {
-				cout<<"nothing"<<endl;
-			}
-			else {
-//				cout<<"not eq"<<endl;
-				return (A[n-i-1] > B[n-i-1]);
-//				if (A[i] < B[i])
-//					return true;
-//				else
-//					return false;
-					
-//				return (A[i] < B[i])?true:false;
-			}
-		}
-	}else {
-//		cout << A << ","<< B << endl;
-		return (A.length() > B.length())?true:false;
-	}
-	
-}
+// A function to do counting sort of arr[] according to 
+// the digit represented by exp. 
+void countSort(int arr[], int n, int exp) { 
+	int output[n]; // output array 
+	int count[10] = { 0 }; 
 
+	// Store count of occurrences in count[] 
+	for (int i = 0; i < n; i++) 
+		count[(arr[i] / exp) % 10]++; 
 
+	// Change count[i] so that count[i] now contains actual 
+	// position of this digit in output[] 
+	for (int i = 1; i < 10; i++) 
+		count[i] += count[i - 1]; 
 
-int partition (string arr[], int low, int high) { 
-	string pivot = arr[high]; // pivot 
-	int i = (low - 1); // Index of smaller element 
-
-	for (int j = low; j <= high - 1; j++){ 
-		// If current element is smaller than the pivot 
-//		if (arr[j] < pivot) { 
-		if (!compare(arr[j], pivot)) { 
-			i++; // increment index of smaller element 
-			swap(&arr[i], &arr[j]); 
-		} 
+	// Build the output array 
+	for (int i = n - 1; i >= 0; i--) { 
+		output[count[(arr[i] / exp) % 10] - 1] = arr[i]; 
+		count[(arr[i] / exp) % 10]--; 
 	} 
-	swap(&arr[i + 1], &arr[high]); 
-	return (i + 1);  
-}  
 
-int partition_r(string arr[], int low, int high){
-    // Generate a random number in between
-    // low .. high
-    srand(time(NULL));
-    int random = low + rand() % (high - low);
- 
-    // Swap A[random] with A[high]
-    swap(arr[random], arr[high]);
- 
-    return partition(arr, low, high);
-}
-
-void quickSort(string arr[], int low, int high) { 
-	if (low < high) { 
-		/* pi is partitioning index, arr[p] is now 
-		at right place */
-		int pi = partition_r(arr, low, high); 
-
-		// Separately sort elements before 
-		// partition and after partition 
-		quickSort(arr, low, pi - 1); 
-		quickSort(arr, pi + 1, high); 
-	} 
+	// Copy the output array to arr[], so that arr[] now 
+	// contains sorted numbers according to current digit 
+	for (int i = 0; i < n; i++) 
+		arr[i] = output[i]; 
 } 
 
-void printArray(string arr[], int size) { 
-	int i; 
-	for (i = 0; i < size; i++) 
-		cout << arr[i] << endl; 
-//	cout << endl; 
+// The main function to that sorts arr[] of size n using 
+// Radix Sort 
+void radixsort(int arr[], int n) { 
+	// Find the maximum number to know number of digits 
+	int m = find_max(arr, n); 
+
+	// Do counting sort for every digit. Note that instead 
+	// of passing digit number, exp is passed. exp is 10^i 
+	// where i is current digit number 
+	for (int exp = 1; m / exp > 0; exp *= 10) 
+		countSort(arr, n, exp); 
+} 
+
+// A utility function to print an array 
+void print(int arr[], int n) { 
+	for (int i = 0; i < n; i++) 
+		cout << arr[i] << " "; 
 } 
 
 int main() { 
-	int count;
-	cin >> count;
-	string arr[count]; 
-	for (int i = 0; i < count; i++){
-		cin >> arr[i];
-	}
-//	string arr[] = {"zzzzz","aa","bb","bc"}; 
+	int arr[] = { 170, 45, 75, 90, 802, 24, 2, 66 }; 
 	int n = sizeof(arr) / sizeof(arr[0]); 
-	quickSort(arr, 0, n - 1); 
-//	cout << "Sorted array: \n"; 
-	printArray(arr, n); 
-	return 0; 
-} 
 
+	radixsort(arr, n); 
+	print(arr, n); 
+	return 0; 
+}
