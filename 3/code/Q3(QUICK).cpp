@@ -64,7 +64,7 @@ int main() {
 	string myText;
 	string arr[2000]; 
 	string filename = "filename.txt";
-	inFile.open("input2.txt");
+	inFile.open("input3.txt");
     if (!inFile) {
         cout << "Unable to open file";
         exit(1); // terminate with error
