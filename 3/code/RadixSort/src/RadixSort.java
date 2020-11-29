@@ -40,14 +40,15 @@ public class RadixSort {
     public static void main(String[] args) {
         ArrayList<String> arr = new ArrayList<>();
         Scanner scan = new Scanner(System.in);
-        String str;
+        String string;
         int n = scan.nextInt();
         int max = 0;
+        string = scan.nextLine();
         for (int i = 0; i < n; i++) {
-            str = scan.nextLine();
-            if (max < str.length())
-                max = str.length();
-            arr.add(str);
+            string = scan.nextLine();
+            if (max < string.length())
+                max = string.length();
+            arr.add(string);
         }
         radixSort(arr, n, max);
     }
