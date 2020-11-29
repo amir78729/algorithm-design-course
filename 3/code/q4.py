@@ -84,32 +84,33 @@ def radix_sort(arr, m):
         print(*arr)
 
 
-# array = []
-# mx = 0
-# n = int(input())
-# for i in range(n):
-#     s = input()
-#     array.append(s)
-#     if len(s) > mx:
-#         mx = len(s)
-# radix_sort(array, mx)
-
 array = []
 mx = 0
-myfile = open('input11.txt', 'r')
-lines = myfile.readlines()
-print(lines)
-n = int(lines[0])
-print(n)
-for i in range(1, n+1):
-    line = lines[i].rstrip()
-    array.append(line)
-    if len(line) > mx:
-        mx = len(line)
+n = int(input())
+for i in range(n):
+    s = input()
+    array.append(s)
+    if len(s) > mx:
+        mx = len(s)
+radix_sort(array, mx)
+
+# array = []
+# mx = 0
+# myfile = open('input11.txt', 'r')
+# lines = myfile.readlines()
+# print(lines)
+# n = int(lines[0])
+# print(n)
+# for i in range(1, n+1):
+#     line = lines[i].rstrip()
+#     array.append(line)
+#     if len(line) > mx:
+#         mx = len(line)
+
     # print(array)
-print(mx)
+# print(mx)
 # print(array)
-start_time = time.time()
-merge_sort(array, mx)
-print("----%s seconds ----" % (time.time() - start_time))
-print(comparisons)
+# start_time = time.time()
+# merge_sort(array, mx)
+# print("----%s seconds ----" % (time.time() - start_time))
+# print(comparisons)
