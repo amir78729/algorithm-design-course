@@ -1,67 +1,92 @@
 // C++ implementation of Radix Sort 
 #include <iostream> 
+#include <vector> 
+#include <string>
+#include <bits/stdc++.h>
+
 using namespace std; 
 
-// A utility function to get maximum value in arr[] 
-int find_max(int arr[], int n) { 
-	int max = arr[0]; 
-	for (int i = 1; i < n; i++) 
-		if (arr[i] > max) 
-			max = arr[i]; 
-	return max; 
-} 
 
-// A function to do counting sort of arr[] according to 
-// the digit represented by exp. 
-void countSort(int arr[], int n, int exp) { 
-	int output[n]; // output array 
-	int count[10] = { 0 }; 
+#define RANGE 255
 
-	// Store count of occurrences in count[] 
-	for (int i = 0; i < n; i++) 
-		count[(arr[i] / exp) % 10]++; 
+//    public static void main(String[] args) {
+//
+//        /
+//    }
 
-	// Change count[i] so that count[i] now contains actual 
-	// position of this digit in output[] 
-	for (int i = 1; i < 10; i++) 
-		count[i] += count[i - 1]; 
+//    void radixSort(vector<char[]> strings, int n, int max) {
+//        ArrayList<char[]> output = new ArrayList<>();
+//        int[] count = new int[RANGE + 1];
+//
+//        for (int i = 0; i < max; ++i) { //Selecting indexes
+//            Arrays.fill(count, 0);
+//
+//            System.out.println(count);
+//
+//            for (int j = 0; j < n; j++) {// Output = Strings
+//                output.add(strings.get(j));
+//            }
+//
+//            System.out.println(output);
+//
+//            for (int j = 0; j < n; j++) {//Counting the same letters then storing in count array.
+//                try {
+//                    ++count[strings.get(j)[i]];
+//                } catch (Exception e) {//If it is null then add it to count[0].
+//                    ++count[0];
+//                }
+//            }
+//
+//            System.out.println(count);
+//
+//            for (int j = 1; j < RANGE; ++j) {//Adding the previous element.
+//                count[j] += count[j - 1];
+//            }
+//
+//            System.out.println(count);
+//
+//            for (int j = n - 1; j >= 0; j--) {//Sorting elements with count array.
+//                try {
+//                    output.set(count[strings.get(j)[i]] - 1, strings.get(j));
+//                    --count[strings.get(j)[i]];
+//                } catch (Exception e) {
+//                    output.set(count[0] - 1, strings.get(j));
+//                    --count[0];
+//                }
+//            }
+//
+//            for (int j = 0; j < n; j++) {//Strings = Output
+//                strings.set(j, output.get(j));
+//                System.out.print(String.valueOf(output.get(j)) + " ");//Print the result
+//            }
+//            if (i != max-1)
+//                System.out.println();//If it's not the last line then go next line.
+//
+//            output.clear();//Clear the output array for next round.
+//        }
+//    }
+//}}
 
-	// Build the output array 
-	for (int i = n - 1; i >= 0; i--) { 
-		output[count[(arr[i] / exp) % 10] - 1] = arr[i]; 
-		count[(arr[i] / exp) % 10]--; 
-	} 
+int main(){
+//	/Initialization
+    vector<char[]> strings;
+//    Scanner scan = new Scanner(System.in);
+    string str;
+    int n ;
+    cin >> n;
+    int maxLen = 0;
+//        str = scan.nextLine();
 
-	// Copy the output array to arr[], so that arr[] now 
-	// contains sorted numbers according to current digit 
-	for (int i = 0; i < n; i++) 
-		arr[i] = output[i]; 
-} 
+    //Get input
+    for (int i = 0; i < n; i++) {
+        cin >> str;
+        if (maxLen < str.length())//Maximum size of all strings.
+            maxLen = str.length();
+    	char char_array[str.length()];
+		strcpy(char_array, str.c_str());
 
-// The main function to that sorts arr[] of size n using 
-// Radix Sort 
-void radixsort(int arr[], int n) { 
-	// Find the maximum number to know number of digits 
-	int m = find_max(arr, n); 
+        strings.push_back(char_array);// Arraylist of arrays
+    }
 
-	// Do counting sort for every digit. Note that instead 
-	// of passing digit number, exp is passed. exp is 10^i 
-	// where i is current digit number 
-	for (int exp = 1; m / exp > 0; exp *= 10) 
-		countSort(arr, n, exp); 
-} 
-
-// A utility function to print an array 
-void print(int arr[], int n) { 
-	for (int i = 0; i < n; i++) 
-		cout << arr[i] << " "; 
-} 
-
-int main() { 
-	int arr[] = { 170, 45, 75, 90, 802, 24, 2, 66 }; 
-	int n = sizeof(arr) / sizeof(arr[0]); 
-
-	radixsort(arr, n); 
-	print(arr, n); 
-	return 0; 
+//    radixSort(strings, n, maxLen);
 }
