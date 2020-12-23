@@ -1,18 +1,18 @@
-def knapSack(W, wt, val, n): 
-	if n == 0 or W == 0: 
+def knap_sack(backpack, weight, value, n): 
+	if n == 0 or backpack == 0: 
 		return 0
-	if (wt[n-1] > W): 
-		return knapSack(W, wt, val, n-1) 
+	if (weight[n-1] > backpack): 
+		return knap_sack(backpack, weight, value, n-1) 
 	else: 
 		return max( 
-			val[n-1] + knapSack( 
-				W-wt[n-1], wt, val, n-1), 
-			knapSack(W, wt, val, n-1)) 
+			value[n-1] + knap_sack( 
+				backpack-weight[n-1], weight, value, n-1), 
+			knap_sack(backpack, weight, value, n-1)) 
 
 if __name__ == '__main__':
-    val = [60, 100, 120] 
-    wt = [10, 20, 30] 
-    W = 50
-    n = len(val) 
-    print( knapSack(W, wt, val, n) )
+    value = [60, 100, 120] 
+    weight = [10, 20, 30] 
+    backpack = 50
+    n = len(value) 
+    print( knap_sack(backpack, weight, value, n) )
 
