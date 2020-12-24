@@ -25,7 +25,11 @@ if __name__ == '__main__':
         s[index].append(int(r))
     s.sort(key=takeSecond)
     if n <= k:
-        printMaxActivities() 
+        printMaxActivities()
         print("YES")
+        # if res <= n: 
+        #     print("YES")
+        # else:
+        #     print("NO")
     else:
         print("NO")
