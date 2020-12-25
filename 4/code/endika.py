@@ -2,32 +2,9 @@ if __name__ == '__main__':
 	n, k = input().split()
 	n ,k = int(n), int(k)
 	people = []
-	# for i in range(n):
-	# 	people.append(empty)
 
-	# print(people)
 	input_string = input()
 	input_string = [x for x in input_string]
-	# print(input_string)
-	# people.append(input_string)
-	# for j in range(len(input_string)):
-	# 	people[0].append(input_string[j])
-# for level in range(n - 1):
-# 	empty = []
-# 	people.append(empty) # people[level + 1] has been created
-# 	print(len(people))
-# 	for j in range(n - level + 1):
-# 		if people[level][j] == 'K' or people[level][j + 1] == 'K':
-# 			print("k")
-# 			empty.append('K')
-# 		else:
-# 			print("b")
-# 			empty.append('B')
-# 	people.append(empty)
-# 	# people[2].append('l')
-# 	# people[2].append('l')
-# 	print(empty)
-# 	print(people)
 
 	for level in range(n):
 		empty_level = []
@@ -38,6 +15,68 @@ if __name__ == '__main__':
 	
 	people[n-1] = input_string
 
+	# for i in range(n - 1):
+	# 	empty_level = []
+	# 	for j in range(n - i - 1):
+	# 		if people[n - i - 1][j] == 'K' or people[n - i - 1][j + 1] == 'K':	
+	# 			empty_level.append('K')
+	# 		else:
+	# 			empty_level.append('B')
+	# 	people[n - i - 2] = empty_level
+			
+	# print(people)
+	remaining = k
+
+	m = n//2
+	while True:
+		try:
+			if people[n - 1][m] == 'B' and remaining > 0:
+				people[n - 1][m] = 'K'
+				remaining -= 1
+				break
+			else:
+				m += 1
+		except:
+			break
+
+	m = n//2
+	while True:
+		try:
+			if people[n - 1][m] == 'B' and remaining > 0:
+				people[n - 1][m] = 'K'
+				remaining -= 1
+				break
+			else:
+				m -= 1
+		except:
+			break
+
+	
+	if people[n - 1][0] == 'B':
+		flag = True
+	else:
+		flag = False
+	for index in range(n-1):
+		if remaining > 0:
+			if people[n - 1][index + 1] == 'B':
+				if flag:
+					people[n - 1][index + 1] = 'K'
+					remaining -= 1
+					flag = False
+				else:
+					flag = True
+			if people[n - 1][index + 1] == 'K':
+				flag = False
+	
+	# print(remaining)
+
+	for last_itr in range(n):
+		# print(people[n - 1][last_itr])
+		if remaining > 0:
+			if people[n - 1][last_itr] == 'B':
+				people[n - 1][last_itr] = 'K'
+				remaining -= 1
+			
 	for i in range(n - 1):
 		empty_level = []
 		for j in range(n - i - 1):
@@ -46,8 +85,12 @@ if __name__ == '__main__':
 			else:
 				empty_level.append('B')
 		people[n - i - 2] = empty_level
-			
-			
+	
+	# print(people)
 
-	print(people)
-			
+	res = 0
+	for p in people:
+		for pp in p:
+			if pp == 'K':
+				res += 1
+	print(res)
