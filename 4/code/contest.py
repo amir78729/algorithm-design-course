@@ -1,9 +1,8 @@
-def printMaxActivities( ): 
+def select_activities( ): 
 	global res
 	i = 0
 	for j in range(k): 
 		if s[j][0] >= s[i][1]: 
-            # res = 1 + res
 			res += 1
 			i = j 
             
@@ -24,11 +23,11 @@ if __name__ == '__main__':
         s[index].append(int(l))
         s[index].append(int(r))
     s.sort(key=takeSecond)
-    if n <= k:
-        printMaxActivities()
+    if n <= k and n != 0:
+        select_activities()
         print("YES")
-        # if res <= n: 
-        #     print("YES")
+        # if res >= n: 
+            # print("YES")
         # else:
         #     print("NO")
     else:
