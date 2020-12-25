@@ -28,6 +28,7 @@ if __name__ == '__main__':
 # 	# people[2].append('l')
 # 	print(empty)
 # 	print(people)
+
 	for level in range(n):
 		empty_level = []
 		empty_level.append("X")
@@ -37,7 +38,16 @@ if __name__ == '__main__':
 	
 	people[n-1] = input_string
 
-	
+	for i in range(n - 1):
+		empty_level = []
+		for j in range(n - i - 1):
+			if people[n - i - 1][j] == 'K' or people[n - i - 1][j + 1] == 'K':	
+				empty_level.append('K')
+			else:
+				empty_level.append('B')
+		people[n - i - 2] = empty_level
+			
+			
 
 	print(people)
 			
