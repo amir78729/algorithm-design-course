@@ -39,7 +39,7 @@ if __name__ == '__main__':
 		except:
 			break
 
-	m = n//2
+	m = n//2 - 1
 	while True:
 		try:
 			if people[n - 1][m] == 'B' and remaining > 0:
