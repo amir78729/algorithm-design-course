@@ -12,7 +12,6 @@ def takeSecond(elem):
 if __name__ == '__main__':
 
     s = [] 
-    f = [] 
     res = 0
     n, k = input().split()
     n, k = int(n),int(k)
@@ -23,7 +22,7 @@ if __name__ == '__main__':
         s[index].append(int(l))
         s[index].append(int(r))
     s.sort(key=takeSecond)
-    if n <= k and n != 0:
+    if 0 < n <= k and n != 0:
         select_activities()
         print("YES")
         # if res >= n: 
