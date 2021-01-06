@@ -125,5 +125,11 @@ for u, v, weight in result:
     cost += weight
     print("\t\t>  ~{} ( {} <-> {} )".format(round(weight), cities[u].name, cities[v].name))
 print("\t> COST\n\t\t> " , cost)
+print("> WRITING ON CSV FILE (india_cities_KRUSRAL.csv)")
+with open('india_cities_KRUSRAL.csv', 'w', newline='') as file:
+    writer = csv.writer(file)
+    writer.writerow(["city1_name", "city2_name", "weight"])
+    for u, v, weight in result:
+        writer.writerow([cities[u].name, cities[v].name, weight])
 stop_time = time.time()
 print("> TIME\n\t> ", stop_time - start_time, "s")
