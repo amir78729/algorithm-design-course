@@ -17,47 +17,47 @@ def brute_force(A, n):
             if d < min :
                 min = d
     return min
-def stripClosest(strip, size, d): 
-	min_val = d 
-	for i in range(size): 
-		j = i + 1
-		while j < size and (strip[j].y -strip[i].y) < min_val: 
-			min_val = distance_between_2_points(strip[i], strip[j]) 
-			j += 1
-	return min_val 
+# def stripClosest(strip, size, d): 
+# 	min_val = d 
+# 	for i in range(size): 
+# 		j = i + 1
+# 		while j < size and (strip[j].y -strip[i].y) < min_val: 
+# 			min_val = distance_between_2_points(strip[i], strip[j]) 
+# 			j += 1
+# 	return min_val 
 
-def closestUtil(P, Q, n): 
-	if n <= 3: 
-		return brute_force(P, n) 
-	mid = n // 2
-	midPoint = P[mid] 
-	dl = closestUtil(P[:mid], Q, mid) 
-	dr = closestUtil(P[mid:], Q, n - mid) 
-	d = min(dl, dr) 
-	strip = [] 
-	for i in range(n): 
-		if abs(Q[i].x - midPoint.x) < d: 
-			strip.append(Q[i]) 
+# def closestUtil(P, Q, n): 
+# 	if n <= 3: 
+# 		return brute_force(P, n) 
+# 	mid = n // 2
+# 	midPoint = P[mid] 
+# 	dl = closestUtil(P[:mid], Q, mid) 
+# 	dr = closestUtil(P[mid:], Q, n - mid) 
+# 	d = min(dl, dr) 
+# 	strip = [] 
+# 	for i in range(n): 
+# 		if abs(Q[i].x - midPoint.x) < d: 
+# 			strip.append(Q[i]) 
 	
-	# i = mid
-	# while abs(Q[i].x - midPoint.x) < d: 
-	# 		strip.append(Q[i]) 
-	# 		i -= 1
-	# i = mid
-	# while abs(Q[i].x - midPoint.x) < d: 
-	# 		strip.append(Q[i]) 
-	# 		i += 1
+# 	# i = mid
+# 	# while abs(Q[i].x - midPoint.x) < d: 
+# 	# 		strip.append(Q[i]) 
+# 	# 		i -= 1
+# 	# i = mid
+# 	# while abs(Q[i].x - midPoint.x) < d: 
+# 	# 		strip.append(Q[i]) 
+# 	# 		i += 1
 
 
-	return min(d, stripClosest(strip, len(strip), d)) 
+# 	return min(d, stripClosest(strip, len(strip), d)) 
  
-def closest(P, n): 
-	P.sort(key = lambda point: point.x) 
-	Q = copy.deepcopy(P)
-	# Q = P
-	Q.sort(key = lambda point: point.y)	 
+# def closest(P, n): 
+# 	P.sort(key = lambda point: point.x) 
+# 	Q = copy.deepcopy(P)
+# 	# Q = P
+# 	Q.sort(key = lambda point: point.y)	 
 
-	return closestUtil(P, Q, n) 
+# 	return closestUtil(P, Q, n) 
 
 
 # P = []
@@ -87,8 +87,14 @@ with open(file_name,  encoding="utf-8" , errors='ignore') as file:
 				
 print(file_name)
 print("# of points: ",len(P))
+
+
+for c in P:
+    print("{}/{}".format(c.x, c.y))
+
 # print(n)
 # result = closest(P, int(n))
 # print("result for recursive method: ",round(result, 5))
 result = brute_force(P, int(n))
 print("result for recursive method: ",round(result, 5))
+

@@ -5,44 +5,17 @@ import static java.util.Arrays.sort;
 public class RadixSort {
     private int comparisons;
     private static final int RANGE = 255;
-//    private static void countingSort(ArrayList<String> arr, int n, int i){
-//        ArrayList<String> output = new ArrayList<>();
-//        int[] count = new int[RANGE + 1];
-//        Arrays.fill(count, 0);
-//        for (int j = 0; j < n; j++)
-//            output.add(arr.get(j));
-//        for (int j = 0; j < n; j++) {
-//            try {
-//                count[arr.get(j).charAt(i)]++;
-//            } catch (Exception e) {
-//                count[0]++;
-//            }
-//        }
-//        for (int j = 1; j < RANGE; ++j)
-//            count[j] += count[j - 1];
-//        for (int j = n - 1; j >= 0; j--) {
-//            try {
-//                output.set(count[arr.get(j).charAt(i)] - 1, arr.get(j));
-//                count[arr.get(j).charAt(i)]--;
-//            } catch (Exception e) {
-//                output.set(count[0] - 1, arr.get(j));
-//                count[0]--;
-//            }
-//        }
-//        for (int j = 0; j < n; j++) {
-//            arr.set(j, output.get(j));
-//            System.out.print(output.get(j) + " ");
-//        }
 
-    private static void merge(ArrayList<String> arr, int l, int m, int r)
+
+    private static void merge(String[] arr, int l, int m, int r)
     {
         // Find sizes of two subarrays to be merged
         int n1 = m - l + 1;
         int n2 = r - m;
 
         /* Create temp arrays */
-        int L[] = new int[n1];
-        int R[] = new int[n2];
+        String L[] = new String[n1];
+        String R[] = new String[n2];
 
         /*Copy data to temp arrays*/
         for (int i = 0; i < n1; ++i)
@@ -58,7 +31,7 @@ public class RadixSort {
         // Initial index of merged subarry array
         int k = l;
         while (i < n1 && j < n2) {
-            if (L[i] <= R[j]) {
+            if (L[i].compareTo(R[j]) != 1 ) {
                 arr[k] = L[i];
                 i++;
             }
@@ -86,7 +59,7 @@ public class RadixSort {
 
     // Main function that sorts arr[l..r] using
     // merge()
-    private static void mergeSort(int arr[], int l, int r)
+    private static void mergeSort(String arr[], int l, int r)
     {
         if (l < r) {
             // Find the middle point
@@ -102,7 +75,7 @@ public class RadixSort {
     }
 
 //    }
-    private static void radixSort(ArrayList<String> arr, int n, int maximumLength) {
+    private static void radixSort(String[] arr, int n, int maximumLength) {
         for (int i = 0; i < maximumLength; ++i) {
             mergeSort(arr, n, i);
             if (i != maximumLength-1)
@@ -110,7 +83,7 @@ public class RadixSort {
         }
     }
     public static void main(String[] args) {
-        ArrayList<String> arr = new ArrayList<>();
+        ArrayList<String> arraylist = new ArrayList<>();
         Scanner scan = new Scanner(System.in);
         String string;
         int n = scan.nextInt();
@@ -120,8 +93,10 @@ public class RadixSort {
             string = scan.nextLine();
             if (max < string.length())
                 max = string.length();
-            arr.add(string);
+            arraylist.add(string);
         }
+        String[] arr = (String[]) arraylist.toArray();
+
         radixSort(arr, n, max);
     }
 }

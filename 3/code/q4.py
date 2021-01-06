@@ -1,55 +1,64 @@
 import time
 comparisons = 0
 
-def merge(index, l, r, ):
-    i = j = k = 0
+def merge(arr, index, l, r, ):
+    global comparisons
+    i = 0
+    j = 0
+    k = 0
     while i < len(l) and j < len(r):
+        comparisons = comparisons + 1
         if len(l[i]) > index and len(r[j]) > index:
-            if ord(l[i][index]) <= ord(r[j][index]):
+            comparisons = comparisons + 1
+            if (l[i][index]) <= (r[j][index]):
                 arr[k] = l[i]
                 i += 1
             else:
                 arr[k] = r[j]
                 j += 1
+            comparisons = comparisons + 1
         else:
             if len(l[i]) < len(r[j]):
+                arr[k] = l[i]
+                i += 1
+            elif len(l[i]) == len(r[j]):
                 arr[k] = l[i]
                 i += 1
             elif len(l[i]) > len(r[j]):
                 arr[k] = r[j]
                 j += 1
-            elif len(l[i]) == len(r[j]):
-                arr[k] = l[i]
-                i += 1
-            comparisons += 1
-        k += 1
-
-    while i < len(l):
-        arr[k] = l[i]
-        i += 1
+            comparisons = comparisons + 1
         k += 1
     while j < len(r):
+        comparisons = comparisons + 1
         arr[k] = r[j]
         j += 1
         k += 1
-
-
+    while i < len(l):
+        comparisons = comparisons + 1
+        arr[k] = l[i]
+        i += 1
+        k += 1
+    
 def merge_sort(arr, index):
     global comparisons
-    # recursive part:
-    if len(arr) > 1:
+    comparisons = comparisons + 1
+    if len(arr) <= 1:
+        return 
+    else:
+        
         mid = len(arr) // 2
         l = arr[:mid]
         r = arr[mid:]
         merge_sort(l, index)
         merge_sort(r, index)
-        merge(index,l,r)
+        merge(arr,index,l,r)
         # i = j = k = 0
 
         # merging:
         # while i < len(l) and j < len(r):
         #     if len(l[i]) > index and len(r[j]) > index:
-        #         if ord(l[i][index]) <= ord(r[j][index]):
+        #         if (l[i][index]) <= (r[j][index]):
         #             arr[k] = l[i]
         #             i += 1
         #         else:
@@ -65,7 +74,7 @@ def merge_sort(arr, index):
         #         elif len(l[i]) == len(r[j]):
         #             arr[k] = l[i]
         #             i += 1
-        #         comparisons += 1
+        #         comparisons = comparisons + 1
         #     k += 1
 
         # while i < len(l):
@@ -91,8 +100,13 @@ for i in range(n):
     s = input()
     array.append(s)
     if len(s) > mx:
+        comparisons = comparisons + 1
         mx = len(s)
 radix_sort(array, mx)
+print (comparisons)
+
+
+
 
 # array = []
 # mx = 0

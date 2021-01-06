@@ -21,7 +21,7 @@ def merge(index, l, r, ):
             elif len(l[i]) == len(r[j]):
                 arr[k] = l[i]
                 i += 1
-            comparisons += 1
+            comparisons = comparisons + 1
         k += 1
 
     while i < len(l):
@@ -65,7 +65,7 @@ def merge_sort(arr, index):
         #         elif len(l[i]) == len(r[j]):
         #             arr[k] = l[i]
         #             i += 1
-        #         comparisons += 1
+        #         comparisons = comparisons + 1
         #     k += 1
 
         # while i < len(l):

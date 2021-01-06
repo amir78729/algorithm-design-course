@@ -1,95 +1,47 @@
-n, k = input().split()
-n ,k = int(n), int(k)
-people = []
+import ctypes
+from ctypes import c_longlong as ll
 
-input_string = input()
-input_string = [x for x in input_string]
+n, K = map(int,input().split())
+s = input()
+maxn = 510
+arr = [[[63 for k in range(maxn)] for j in range(maxn)] for i in range(2)]
+# string t;
+cur = 0
+prv = 1
+# ctypes.memset(arr[cur], 63,  len(arr[cur]));
 
-for level in range(n):
-	empty_level = []
-	empty_level.append("X")
-	for vote in range(level):
-		empty_level.append("X")
-	people.append(empty_level)
+# arr = [[63 for k in range(maxn)] for j in range(maxn)] 
 
-people[n-1] = input_string
+# arr[cur][0][0] = 0;
+for i in range(n) :
+	cur, prv = prv, cur
+	# ctypes.memset(arr[cur], 63, len(arr[cur]) )
 
-# for i in range(n - 1):
-# 	empty_level = []
-# 	for j in range(n - i - 1):
-# 		if people[n - i - 1][j] == 'K' or people[n - i - 1][j + 1] == 'K':	
-# 			empty_level.append('K')
-# 		else:
-# 			empty_level.append('B')
-# 	people[n - i - 2] = empty_level
-		
-# print(people)
-remaining = k
+	# arr = [[63 for k in range(maxn)] for j in range(maxn)] 
 
-m = n//2
-while True:
-	try:
-		if people[n - 1][m] == 'B' and remaining > 0:
-			people[n - 1][m] = 'K'
-			remaining -= 1
-			break
-		else:
-			m += 1
-	except:
-		break
+	for j in range(i) :
+	# for (int j = 0; j <= i + 1; j++) :
+		for k in range(K):
+		# for (int k = 0; k <= K; k++) :
+			# //don't change!
+			if s[i] == 'B' and j:
+				arr[cur][j][k] = min(arr[cur][j][k], arr[prv][j - 1][k] + j)
+			elif s[i] == 'K':
+				arr[cur][0][k] =min(arr[cur][0][k], arr[prv][j][k])
+			# //change
+			if s[i] == 'K':
+				continue;
+			if k:
+				arr[cur][0][k]= min(arr[cur][0][k], arr[prv][j][k - 1])
+			
 
-m = n//2 - 1
-while True:
-	try:
-		if people[n - 1][m] == 'B' and remaining > 0:
-			people[n - 1][m] = 'K'
-			remaining -= 1
-			break
-		else:
-			m -= 1
-	except:
-		break
+# print(arr)	
 
-
-if people[n - 1][0] == 'B':
-	flag = True
-else:
-	flag = False
-for index in range(n-1):
-	if remaining > 0:
-		if people[n - 1][index + 1] == 'B':
-			if flag:
-				people[n - 1][index + 1] = 'K'
-				remaining -= 1
-				flag = False
-			else:
-				flag = True
-		if people[n - 1][index + 1] == 'K':
-			flag = False
-
-# print(remaining)
-
-for last_itr in range(n):
-	# print(people[n - 1][last_itr])
-	if remaining > 0:
-		if people[n - 1][last_itr] == 'B':
-			people[n - 1][last_itr] = 'K'
-			remaining -= 1
-		
-for i in range(n - 1):
-	empty_level = []
-	for j in range(n - i - 1):
-		if people[n - i - 1][j] == 'K' or people[n - i - 1][j + 1] == 'K':	
-			empty_level.append('K')
-		else:
-			empty_level.append('B')
-	people[n - i - 2] = empty_level
-
-# print(people)
-
-res = 0
-for p in people:
-	for pp in p:
-		if pp == 'K':
-			res += 1
-print(res)
+# LL ans = 1e18;
+ans = 10000000000000000000000000000000
+for j in range(n):
+	for k in range(K):
+		ans=min(ans, arr[cur][j][k])
+print(int(len(ll()) *  n * (n + 1) / 2 - ans)) 
+print(ans)
+# return 0;
