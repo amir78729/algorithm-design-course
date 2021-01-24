@@ -161,23 +161,34 @@ burning_ponits = []
 s_ponits = []
 # print(burning_ponits)
 time = 0
+is_impossible = False
 while True:
     time += 1
-    print(time)
-    find_s()
-    s_flag = walk()
+    # print(time)
+    
     if time % k == 0:
         find_fires()
-        flag = burn()  
+        # flag = burn()
+        if not burn():
+            is_impossible = True
+            break
+    find_s()
+    # s_flag = walk()
+    if not walk() :
+        break
+
     
-    print_park()
+    # print_park()
+if is_impossible:
+    print("Impossible")
+else:
+    print(time)
 
 
+# print(burning_ponits)
+# print_park()
 
-print(burning_ponits)
-print_park()
-
-find_fires()
-flag = burn()
-print(burning_ponits)
-print_park()
+# find_fires()
+# flag = burn()
+# print(burning_ponits)
+# print_park()
