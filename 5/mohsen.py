@@ -1,194 +1,118 @@
-def print_park():
-    print()
-    for r in range(n + 2):
-        for c in range(m + 2):
+import math
 
-            if park[r][c] != 'x':
-                print(park[r][c], end="")
+def generate_nodes(level, xxx):
+    if not (level in nodes):
+        node = {}
+        count = 1
+        for i in range(n):
+            for j in range(m):
+                if park[i][j] != 'f' or count in xxx:
+                    current_list = []
+                    if i > 0:
+                        if park[i-1][j] != 'f':
+                            current_list.append((i-1)* m + j + 1)
+                    if j > 0:
+                        if park[i][j-1] != 'f':
+                            current_list.append(i*m + (j-1) + 1)
+                    if i < n-1:
+                        if park[i+1][j] != 'f':
+                            current_list.append((i+1)* m + j + 1)
+                    if j < m-1:
+                        if park[i][j+1] != 'f':
+                            current_list.append(i * m + (j+1) + 1)
+                    node.update({count: current_list})
+                count += 1
+        nodes.update({level: node})
 
-            # print(park[r][c], end="")
+def spreadFire(level, lastLevel):
+    if level > lastLevel[0]:
+        lastLevel[0] += 1
+        fires_c = fires.copy()
+        for fire in fires_c:
+            if fire[0] > 0:
+                park[fire[0] - 1][fire[1]] = 'f'
+                fires.add((fire[0]-1, fire[1]))
+                if fire[1] > 0:
+                    fires.add((fire[0]-1, fire[1] - 1))
+                    park[fire[0] - 1][fire[1] - 1] = 'f'
+                if fire[1] < m-1:
+                    fires.add((fire[0]-1, fire[1] + 1))
+                    park[fire[0] - 1][fire[1] + 1] = 'f'
 
-        print()
+            if fire[0] < n-1:
+                fires.add((fire[0]+1, fire[1]))
+                park[fire[0] + 1][fire[1]] = 'f'
+                if fire[1] > 0:
+                    fires.add((fire[0] + 1, fire[1] - 1))
+                    park[fire[0] + 1][fire[1] - 1] = 'f'
+                if fire[1] < m-1:
+                    fires.add((fire[0]+1, fire[1] + 1))
+                    park[fire[0] + 1][fire[1] + 1] = 'f'
 
-###############################################################################
-# FIRE RELATED FUNCTIONS
+            if fire[1] > 0:
+                fires.add((fire[0], fire[1] - 1))
+                park[fire[0]][fire[1] - 1] = 'f'
+            if fire[1] < m-1:
+                fires.add((fire[0], fire[1] + 1))
+                park[fire[0]][fire[1] + 1] = 'f'
+            
 
-def find_fires(): # save 'f' cells in the matrix
-    for r in range(n + 2):
-        for c in range(m + 2):
-            if park[r][c] == 'f':
-                f = [r,c]
-                if f not in burning_ponits:
-                    burning_ponits.append(f)
-
-
-def burn_point( i, j): 
-    for x in range(3):
-        for y in range(3):
-            try:
-                # if (park[x-1+i][y-1+j] == 's' or park[x-1+i][y-1+j] == 't'):
-                if park[x-1+i][y-1+j] == 't':
-                    return False # someone is dead
+def BFS(node1, target):
+    dis = [-1 for x in range(n*m)]
+    dis[node1-1] = 0
+    levelCount = 1
+    level = levelCount // k
+    l = [0]
+    minWayToMohsen = math.inf
+    q = [node1]
+    currentNodes = [node1]
+    lastKeyOfSet = node1
+    while (len(q) != 0):
+        t = q[0]
+        q.remove(t)
+        try:
+            spreadFire(level, l)
+            generate_nodes(level, currentNodes)
+            for key in nodes[level][t]:
+                if dis[key-1] == -1:
+                    q.append(key)
+                    dis[key-1] = dis[t-1] + 1
+                if key == target:
+                    if dis[key-1] < minWayToMohsen:
+                        minWayToMohsen = dis[key-1]
+            if t == lastKeyOfSet:
+                levelCount += 1
+                level = levelCount // k
+            if lastKeyOfSet not in q:
+                if q != []:
+                    lastKeyOfSet = q[len(q) - 1]
+                    currentNodes = [x for x in q]
                 else:
-                    if park[x-1+i][y-1+j] == '-' or park[x-1+i][y-1+j] == 's' :
-                        park[x-1+i][y-1+j] = 'f'
-                        f = []
-                        f.append(int([x-1+i]))
-                        f.append(int([y-1+j]))
-                        # f = [[x-1+i],[y-1+j]]
-                        if f not in burning_ponits:
-                            burning_ponits.append(f)
-                        s_ponits.remove(f)
-            except:
-                pass
-    return True # no one is hurt
+                    lastKeyOfSet = t
+                    currentNodes = [t]
+        except KeyError:
+            if t == lastKeyOfSet:
+                levelCount += 1
+                level = levelCount // k
+    return minWayToMohsen
 
-def burn():
-    global burning_ponits
-    for p in range(len(burning_ponits)):
-        not_done = burn_point(burning_ponits[p][0], burning_ponits[p][1])
-        if not not_done:
-            return False
-    return True
-
-###############################################################################
-# WALKING RELATED FUNCTIONS
-
-def find_s(): # save 'f' cells in the matrix
-    for r in range(n + 2):
-        for c in range(m + 2):
-            if park[r][c] == 's':
-                s = [r,c]
-                if s not in s_ponits:
-                    s_ponits.append(s)
-
-
-def walk_from_point( i, j): 
-    try:
-        # if (park[x-1+i][y-1+j] == 's' or park[x-1+i][y-1+j] == 't'):
-        x, y = i, j + 1
-        if park[x][y] == 't':
-            return True # Mohsen is here
-        else:
-            if park[x][y] == '-':
-                park[x][y] = 's'
-                f = []
-                f.append(int([x]))
-                f.append(int([y]))
-                # f = [[x-1+i],[y-1+j]]
-                if f not in s_ponits:
-                    s_ponits.append(f)
-    except:
-        pass
-
-    try:
-        # if (park[x-1+i][y-1+j] == 's' or park[x-1+i][y-1+j] == 't'):
-        x, y = i, j - 1
-        if park[x][y] == 't':
-            return True # Mohsen is here
-        else:
-            if park[x][y] == '-':
-                park[x][y] = 's'
-                f = []
-                f.append(int([x]))
-                f.append(int([y]))
-                # f = [[x-1+i],[y-1+j]]
-                if f not in s_ponits:
-                    s_ponits.append(f)
-    except:
-        pass
-
-    try:
-        # if (park[x-1+i][y-1+j] == 's' or park[x-1+i][y-1+j] == 't'):
-        x, y = i + 1, j
-        if park[x][y] == 't':
-            return True # Mohsen is here
-        else:
-            if park[x][y] == '-':
-                park[x][y] = 's'
-                f = []
-                f.append(int([x]))
-                f.append(int([y]))
-                # f = [[x-1+i],[y-1+j]]
-                if f not in s_ponits:
-                    s_ponits.append(f)
-    except:
-        pass
-
-    try:
-        # if (park[x-1+i][y-1+j] == 's' or park[x-1+i][y-1+j] == 't'):
-        x, y = i - 1, j 
-        if park[x][y] == 't':
-            return True # Mohsen is here
-        else:
-            if park[x][y] == '-':
-                park[x][y] = 's'
-                f = []
-                f.append(int([x]))
-                f.append(int([y]))
-                # f = [[x-1+i],[y-1+j]]
-                if f not in s_ponits:
-                    s_ponits.append(f)
-    except:
-        pass
-
-
-    return False # We have not found him yet
-
-def walk():
-    global s_ponits
-    for p in range(len(s_ponits)):
-        not_done = walk_from_point(s_ponits[p][0], s_ponits[p][1])
-        if not_done:
-            return False
-    return True
-
-###############################################################################
-
-n, m, k = map(int, input().split())
-
+n,m,k = map(int, input().split())
 park = []
-tmp = []
-for c in range(m + 2):
-    tmp.append('x')
-
-park.append(tmp)
+fires = set()
 for i in range(n):
-    row_input = 'x' + input() + 'x'
-    park.append(list(row_input))
-park.append(tmp)
-burning_ponits = []
-s_ponits = []
-# print(burning_ponits)
-time = 0
-is_impossible = False
-while True:
-    time += 1
-    # print(time)
-    
-    if time % k == 0:
-        find_fires()
-        # flag = burn()
-        if not burn():
-            is_impossible = True
-            break
-    find_s()
-    # s_flag = walk()
-    if not walk() :
-        break
-
-    
-    # print_park()
-if is_impossible:
-    print("Impossible")
-else:
-    print(time)
-
-
-# print(burning_ponits)
-# print_park()
-
-# find_fires()
-# flag = burn()
-# print(burning_ponits)
-# print_park()
+    line = input()
+    for j in range(m):
+        if line[j] == 's':
+            friend = [i, j]
+        elif line[j] == 't':
+            mohsen = [i, j]
+        elif line[j] == 'f':
+            fires.add((i, j))
+    park.append([x for x in line])
+nodes = {}
+fn = friend[0] * m + friend[1] + 1
+mn = mohsen[0] * m + mohsen[1] + 1
+a = BFS(fn, mn)
+if a == math.inf:
+    a = 'Impossible'
+print(a)
